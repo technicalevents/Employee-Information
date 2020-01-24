@@ -1,0 +1,28 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<Dialog title="INFORMATION">
+		<!--<l:Grid defaultSpan = "L12 M12 S12" width = "auto" id = "idGrid">-->
+		<!--<content>-->
+		<f:SimpleForm>
+			<f:content>
+				<Text text="Please Confirm"></Text>
+				<Label text="First Name" design="Bold"></Label>
+				<!--<Text text="{TestModel>/FirstName}"></Text>-->
+				<Input id="idFirst_frag" value="{TestModel1>/firstName}"></Input>
+				<Label text="Last Name" design="Bold"></Label>
+				<Input id="idLast_frag1" value="{TestModel1>/lastName}"></Input>
+				<Label text="Email ID" design="Bold"></Label>
+				<Input id="idEmail_IDfrag1" value="{TestModel1>/emailId}"></Input>
+				<Label text="Designation" design="Bold"></Label>
+				<Input id="idDesignation_frag1" value="{TestModel1>/designation}"></Input>
+				<Label text="Gender" design="Bold"></Label>
+				<Input id="idGender_frag1" value="{TestModel1>/gender}"></Input>
+			</f:content>
+		</f:SimpleForm>
+		<!--</content>-->
+		<!--</l:Grid>-->
+		<buttons>
+			<Button text="CLOSE" press="closeDialog" type="Reject"/>
+			<Button text="SAVE" press="onSave" type="Accept"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

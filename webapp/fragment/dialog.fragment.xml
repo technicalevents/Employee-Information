@@ -1,0 +1,36 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<Dialog title="INFORMATION">
+		<!--<l:Grid defaultSpan = "L12 M12 S12" width = "auto" id = "idGrid">-->
+		<!--<content>-->
+		<f:SimpleForm>
+			<f:content>
+				<Text text="Please Confirm"></Text>
+				<!--<Label text="Employee ID" design="Bold"></Label>-->
+				<!--<Text text="{EmpDetailDialogModel>/EmployeeDetailfrag/EmpId}"></Text>-->
+				<Label text="First Name" design="Bold"></Label>
+				<Text text="{EmpDetailDialogModel>/EmployeeDetailfrag/FirstName}"></Text>
+				<!--<Input id="idFirst_frag"></Input>-->
+				<Label text="Last Name" design="Bold"></Label>
+				<Text text="{EmpDetailDialogModel>/EmployeeDetailfrag/LastName}"></Text>
+				<!--<Input id="idLast_frag"></Input>-->
+				<Label text="Email ID" design="Bold"></Label>
+				<Text text="{EmpDetailDialogModel>/EmployeeDetailfrag/EmailId}"></Text>
+				<!--<Input id="idEmail_IDfrag"></Input>-->
+				<Label text="Designation" design="Bold"></Label>
+				<Text text="{EmpDetailDialogModel>/EmployeeDetailfrag/Designation}"></Text>
+				<!--<Input id="idDesignation_frag"></Input>-->
+				<Label text="Gender" design="Bold"></Label>
+				<Text text="{EmpDetailDialogModel>/EmployeeDetailfrag/Gender}"></Text>
+				<Label text="User" design="Bold"></Label>
+				<Text text="{EmpDetailDialogModel>/EmployeeDetailfrag/User}"></Text>
+				<!--<Input id="idGender_frag"></Input>-->
+			</f:content>
+		</f:SimpleForm>
+		<!--</content>-->
+		<!--</l:Grid>-->
+		<buttons>
+			<Button text="CLOSE" press="closeDialog" type="Reject"/>
+			<Button text="SAVE" press="onSave" type="Accept"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

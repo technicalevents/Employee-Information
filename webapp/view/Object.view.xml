@@ -1,0 +1,85 @@
+<mvc:View controllerName="test.controller.Object" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc">
+	<Page title="Object Page">
+		<!--<subHeader>-->
+		<!--	<Toolbar>-->
+		<!--		<ToolbarSpacer width="85%"/>-->
+		<!--		<Button text="Delete Multiple" icon="sap-icon://delete" type="Transparent" press="onPressDeleteMultiple"/>-->
+		<!--		<ToolbarSpacer/>-->
+		<!--	</Toolbar>-->
+		<!--</subHeader>-->
+		<content>
+			<!--<Table id="idTable1" items="{ path: 'TestModel1>/EmployeeTable' }">-->
+			<Table id="idTable1" items="{ path: '/ZEMPLOYEE_ANUSet' }" mode="MultiSelect">
+				<headerToolbar>
+					<OverflowToolbar>
+						<content>
+							<!--<Title text="Products" level="H2"/>-->
+							<ToolbarSpacer/>
+							<Button text="Delete Multiple" icon="sap-icon://delete" type="Transparent" press="onPressDeleteMultiple"/>
+						</content>
+						<!--<Button text="Delete Multiple" icon="sap-icon://delete" type="Transparent" press="onPressDeleteMultiple"/>-->
+						<!--</content>-->
+					</OverflowToolbar>
+				</headerToolbar>
+				<columns>
+					<Column>
+						<!--<Text text="First Name" design="BOLD" />-->
+						<Label text="Employee ID" design="Bold"/>
+					</Column>
+					<Column>
+						<!--<Text text="First Name" design="BOLD" />-->
+						<Label text="First Name" design="Bold"/>
+					</Column>
+					<Column>
+						<!--<Text text="Last Name"/>-->
+						<Label text="Last Name" design="Bold"/>
+					</Column>
+					<Column>
+						<!--<Text text="Email ID"/>-->
+						<Label text="Email ID" design="Bold"/>
+					</Column>
+					<Column>
+						<!--<Text text="Designation"/> -->
+						<Label text="Designation" design="Bold"/>
+					</Column>
+					<Column>
+						<!--<Text text="Gender"/>-->
+						<Label text="Gender" design="Bold"/>
+					</Column>
+					<Column width="9rem">
+						<Label text="Actions" design="Bold"/>
+						<!--<rowActionTemplate></rowActionTemplate>-->
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem>
+						<cells>
+							<!--<Text text="{TestModel1>EmpId}"/>-->
+							<!--<Text text="{TestModel1>FirstName}"/>-->
+							<!--<Text text="{TestModel1>LastName}"/>-->
+							<!--<Text text="{TestModel1>EmailId}"/>-->
+							<!--<Text text="{TestModel1>Designation}"/>-->
+							<!--<Text text="{TestModel1>Gender}"/>-->
+							<Text text="{EmpId}"/>
+							<Text text="{FirstName}"/>
+							<Text text="{LastName}"/>
+							<Text text="{EmailId}"/>
+							<Text text="{Designation}"/>
+							<Text text="{Gender}"/>
+							<HBox>
+								<Button press="handleEditPress" icon="sap-icon://edit"/>
+								<Button press="handleDeletePress" icon="sap-icon://delete"/>
+							</HBox>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</content>
+		<footer>
+			<OverflowToolbar id="otbFooter">
+				<Button icon="sap-icon://alert" text="{=${message>/}.length}" visible="{=${message>/}.length > 0}" type="Emphasized"
+					press="onMessagePopoverPress"/>
+			</OverflowToolbar>
+		</footer>
+	</Page>
+</mvc:View>

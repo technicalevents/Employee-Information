@@ -1,0 +1,71 @@
+<mvc:View xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" controllerName="test.controller.Worklist" xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core">
+	<Page title="{i18n>worklistViewTitle}" class="sapUiSizeCompact">
+		<customHeader>
+			<Toolbar>
+				<!--<Button type="Back" press="onPress"/>-->
+				<ToolbarSpacer/>
+				<Title text="Create Employee Data" level="H2"/>
+				<ToolbarSpacer/>
+				<Button text="All Employee Information" press="onPressAllInfo"/>
+			</Toolbar>
+		</customHeader>
+		<!--<subHeader>-->
+		<!--	<Toolbar>-->
+		<!--		<ToolbarSpacer/>-->
+		<!--		<Button text="Default" press="onPress"/>-->
+		<!--<Button type="Reject" text="Reject" press="onPress"/>-->
+		<!--		<Button icon="sap-icon://action" type="Transparent" press="onPress" ariaLabelledBy="actionButtonLabel"/>-->
+		<!--		<ToolbarSpacer/>-->
+		<!--	</Toolbar>-->
+		<!--</subHeader>-->
+		<content>
+			<f:SimpleForm id="idSimpleForm" editable="true">
+				<f:content>
+					<!--<Label text="Employee ID"></Label>-->
+					<!--<Input id="idEmpId" required="true" value="{TestModel>/EmployeeDetail/EmpId}" width="40%" placeholder="Please Enter Employee ID"-->
+					<!--	liveChange="textChange"></Input>-->
+					<Label text="First Name"></Label>
+					<Input id="idFirstName" required="true" value="{TestModel>/EmployeeDetail/FirstName}" width="40%" placeholder="{i18n>firstnamePlaceholder}"
+						liveChange="textChange"></Input>
+					<Label text="Last Name"></Label>
+					<Input id="idLastName" required="true" value="{TestModel>/EmployeeDetail/LastName}" width="40%" placeholder="{i18n>lastnamePlaceholder}"
+						liveChange="textChange"></Input>
+					<Label text="Email ID"></Label>
+					<Input id="idEmailId" required="true" value="{TestModel>/EmployeeDetail/EmailId}" width="40%" placeholder="{i18n>emailPlaceholder}"
+						liveChange="textChange"></Input>
+					<Label text="Gender" required="true"></Label>
+					<RadioButtonGroup id="rbg1" columns="3" width="40%" selectedIndex="-1" select="textChange">
+						<RadioButton id="RB1-1" text="Male" selected="{TestModel>/EmployeeDetail/IsMale}"/>
+						<RadioButton id="RB1-2" text="Female" selected="{TestModel>/EmployeeDetail/IsFemale}"/>
+						<RadioButton id="RB1-3" text="Neutral" selected="{TestModel>/EmployeeDetail/IsNeutral}"/>
+					</RadioButtonGroup>
+					<Label text="Designation" required="true"></Label>
+					<ComboBox id="idCmbx" width="40%" items="{ path: 'TestModel>/DesignationCollection'}" placeholder="{i18n>designationPlaceholder}"
+						value="{TestModel>/EmployeeDetail/Designation}" change="DesignationtextChange">
+						<core:Item key="{TestModel>key}" text="{TestModel>text}"/>
+					</ComboBox>
+					<Label text=""></Label>
+					<Input id="idothers" required="true" value="{TestModel>/EmployeeDetail/Others}" width="40%" placeholder="{i18n>othersPlaceholder}"
+						liveChange="textChange"></Input>
+					<Label text="User" required="true"></Label>
+					<ComboBox id="idUserCmbx" width="40%" items="{ path: 'TestModel>/UserCollection'}" placeholder="{i18n>UserPlaceholder}"
+						value="{TestModel>/EmployeeDetail/User}" change="UserChange">
+						<core:Item key="{TestModel>key}" text="{TestModel>text}"/>
+					</ComboBox>
+				</f:content>
+			</f:SimpleForm>
+		</content>
+		<footer>
+			<Bar>
+				<contentMiddle>
+					<CheckBox id="idcheckbox" text="Please accept Terms and Conditions" selected="false" textAlign="Center" select="textChange"/>
+				</contentMiddle>
+				<contentRight>
+					<Button type="Accept" text="Submit" press="onSubmit"/>
+					<Button type="Emphasized" text="Reset" press="onReset"/>
+				</contentRight>
+			</Bar>
+		</footer>
+	</Page>
+</mvc:View>
