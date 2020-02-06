@@ -19,22 +19,75 @@ sap.ui.define([
 			formatter: formatter,
 
 			onInit: function () {
+				// var oEmployeeDetailModel = new JSONModel();
+				// oEmployeeDetailModel.setProperty("/", {
+				// 	"EmployeeTable": {
+				// 		"EmpId": "",
+				// 		"FirstName": "",
+				// 		"LastName": "",
+				// 		"EmailId": "",
+				// 		"Gender": "",
+				// 		"Designation": ""
+				// 	}
+				// });
+				// this.getView().setModel(oEmployeeDetailModel, "TestModel1");
+				this.getRouter().getRoute("object").attachPatternMatched(this._onObjectMatched, this);
+
+				var CmbxData = [{
+					"key": "CN",
+					"text": "Consultant"
+				}, {
+					"key": "SCN",
+					"text": "Sr.Consultant"
+				}, {
+					"key": "AT",
+					"text": "Architect"
+				}, {
+					"key": "OT",
+					"text": "Others"
+				}];
+
+				var oUIstate = new JSONModel();
+				oUIstate.setProperty("/", {
+					"visibleUser": false,
+					"visibleOthers": false,
+					"editable": false
+				});
+				this.getView().setModel(oUIstate, "UIstate");
+
 				var oEmployeeDetailModel = new JSONModel();
 				oEmployeeDetailModel.setProperty("/", {
-					"EmployeeTable": {
+					"DesignationCollection": CmbxData,
+					"EmployeeDetailfrag": {
 						"EmpId": "",
 						"FirstName": "",
 						"LastName": "",
 						"EmailId": "",
 						"Gender": "",
-						"Designation": ""
+						"Designation": "",
+						"Others": "",
+						"User": ""
 					}
 				});
-				this.getView().setModel(oEmployeeDetailModel, "TestModel1");
-				this.getRouter().getRoute("object").attachPatternMatched(this._onObjectMatched, this);
+				this.getView().setModel(oEmployeeDetailModel, "EmpDetailDialogModel");
+				sap.ui.getCore().getMessageManager("message").removeAllMessages();
 			},
 
 			onPressDeleteMultiple: function (oTableHeaderDelete) {
+
+				var selectedRow = this.byId("idTable1").getSelectedIndices();
+
+				if (this.byId("idTable1").getSelectedIndices().length < 1) {
+					MessageBox.show(
+						"Please Select an Entry", {
+							icon: MessageBox.Icon.ERROR,
+							title: "ERROR",
+							actions: ["OK"],
+							initialFocus: "OK"
+						}
+					);
+					return;
+				}
 
 				MessageBox.show(
 					"Please confirm if you want to Delete the Selected Entries", {
@@ -45,29 +98,31 @@ sap.ui.define([
 						onClose: function (oAction) {
 
 							if (oAction === 'YES') {
-								var selectedRow = this.byId("idTable1").getSelectedContexts();
 								var aPromise = [];
 								//Put for loop
 								for (var i = 0; i < selectedRow.length; i++) {
-									var indSelectedRow = selectedRow[i].getObject("EmpId");
+									var indSelectedRow = this.byId("idTable1").getContextByIndex(selectedRow[i]).getObject("EmpId");
 									aPromise.push(this.removemultiple(indSelectedRow));
 
 								}
 								this.submitBatchReq().done(function () {
-									debugger;
-								}.bind(this, aPromise))
 
+								}.bind(this, aPromise))
 								.fail(function () {
 									debugger;
-								}.bind(this));
+								}.bind(this, aPromise));
 								// var path = "/ZEMPLOYEE_ANUSet('" + this.getSelectedRowData.getCells()[0].getText() + "')";
-
 								// this._onObjectMatched();
 							}
 						}.bind(this)
 					});
-
 				// debugger;
+			},
+
+			onPressRefresh: function () {
+				// this.getView().getModel().refresh(true);
+				this.byId("idTable1").getBinding("rows").refresh(true);
+				sap.ui.getCore().getMessageManager("message").removeAllMessages();
 			},
 
 			submitBatchReq: function () {
@@ -92,16 +147,18 @@ sap.ui.define([
 				var odeferred = jQuery.Deferred();
 
 				var path = "/ZEMPLOYEE_ANUSet('" + indSelectedRow + "')";
+
+				sap.ui.getCore().getMessageManager("message").removeAllMessages();
 				this.getOwnerComponent().getModel().remove(path, {
-					success: function (oSuccessDelete) {
+					success: function (oSuccessDelete, oResponse) {
 						// this._onObjectMatched();
-						MessageBox.show(
-							"Selected Entries Deleted", {
-								icon: MessageBox.Icon.WARNING,
-								title: "Success",
-								actions: ["Cool"],
-								initialFocus: "Cool"
-							});
+						// MessageBox.show(
+						// 	"Selected Entries Deleted", {
+						// 		icon: MessageBox.Icon.WARNING,
+						// 		title: "Success",
+						// 		actions: ["Cool"],
+						// 		initialFocus: "Cool"
+						// 	});
 						odeferred.resolve();
 					}.bind(this),
 					error: function (oErrorDelete) {
@@ -116,23 +173,27 @@ sap.ui.define([
 
 			handleEditPress: function (oEvent) {
 
-				if (!this._getDialog1) {
-					this._getDialog1 = sap.ui.xmlfragment("test.fragment.dialog1", this);
-					this.getView().addDependent(this._getDialog1);
+				if (!this._getDialog) {
+					this._getDialog = sap.ui.xmlfragment("test.fragment.dialog", this);
+					this.getView().addDependent(this._getDialog);
 				}
-				this._getDialog1.open();
+				this._getDialog.open();
 
 				var getSelectedRowData = oEvent.getSource().getBindingContext().getObject();
 				// oEvent.getSource().getParent().getParent();
-				this.getView().getModel("TestModel1").setProperty("/empid", getSelectedRowData.EmpId);
-				this.getView().getModel("TestModel1").setProperty("/firstName", getSelectedRowData.FirstName);
-				this.getView().getModel("TestModel1").setProperty("/lastName", getSelectedRowData.LastName);
-				this.getView().getModel("TestModel1").setProperty("/emailId", getSelectedRowData.EmailId);
-				this.getView().getModel("TestModel1").setProperty("/designation", getSelectedRowData.Designation);
-				this.getView().getModel("TestModel1").setProperty("/gender", getSelectedRowData.Gender);
+				// this.getView().getModel("EmpDetailDialogModel").setProperty("/EmployeeDetailfrag/EmpId", getSelectedRowData.EmpId);
+				// this.getView().getModel("EmpDetailDialogModel").setProperty("/EmployeeDetailfrag/FirstName", getSelectedRowData.FirstName);
+				// this.getView().getModel("EmpDetailDialogModel").setProperty("/EmployeeDetailfrag/LastName", getSelectedRowData.LastName);
+				// this.getView().getModel("EmpDetailDialogModel").setProperty("/EmployeeDetailfrag/EmailId", getSelectedRowData.EmailId);
+				// this.getView().getModel("EmpDetailDialogModel").setProperty("/EmployeeDetailfrag/Designation", getSelectedRowData.Designation);
+				// this.getView().getModel("EmpDetailDialogModel").setProperty("/EmployeeDetailfrag/Gender", getSelectedRowData.Gender);
+				this.getView().getModel("EmpDetailDialogModel").setProperty("/EmployeeDetailfrag", getSelectedRowData);
+
+				this.getView().getModel("UIstate").setProperty("/visibleUser", false);
+				this.getView().getModel("UIstate").setProperty("/editable", true);
 			},
 			closeDialog: function () {
-				this._getDialog1.close();
+				this._getDialog.close();
 			},
 
 			handleDeletePress: function (oEvent) {
@@ -176,13 +237,16 @@ sap.ui.define([
 			onSave: function (oEvent) {
 				// var getSelectedRowData = oEvent.getSource().getParent().getParent();
 				var odataUpdate = {};
-				odataUpdate.EmpId = this.getView().getModel("TestModel1").getProperty("/empid");
-				odataUpdate.FirstName = this.getView().getModel("TestModel1").getProperty("/firstName");
-				odataUpdate.LastName = this.getView().getModel("TestModel1").getProperty("/lastName");
-				odataUpdate.EmailId = this.getView().getModel("TestModel1").getProperty("/emailId");
-				odataUpdate.Gender = this.getView().getModel("TestModel1").getProperty("/gender");
-				odataUpdate.Designation = this.getView().getModel("TestModel1").getProperty("/designation");
-
+				odataUpdate.EmpId = this.getView().getModel("EmpDetailDialogModel").getProperty("/EmployeeDetailfrag/EmpId");
+				odataUpdate.FirstName = this.getView().getModel("EmpDetailDialogModel").getProperty("/EmployeeDetailfrag/FirstName");
+				odataUpdate.LastName = this.getView().getModel("EmpDetailDialogModel").getProperty("/EmployeeDetailfrag/LastName");
+				odataUpdate.EmailId = this.getView().getModel("EmpDetailDialogModel").getProperty("/EmployeeDetailfrag/EmailId");
+				odataUpdate.Gender = this.getView().getModel("EmpDetailDialogModel").getProperty("/EmployeeDetailfrag/Gender");
+				if (this.getView().getModel("EmpDetailDialogModel").getProperty("/EmployeeDetailfrag/Designation") === "Others") {
+					odataUpdate.Designation = this.getView().getModel("EmpDetailDialogModel").getProperty("/EmployeeDetailfrag/Others");
+				} else {
+					odataUpdate.Designation = this.getView().getModel("EmpDetailDialogModel").getProperty("/EmployeeDetailfrag/Designation");
+				}
 				// 	"EmpId": this.getView().getModel("TestModel1").getProperty("/empid"),
 				// 	"FirstName": this.getView().getModel("TestModel1").getProperty("/firstName"),
 				// 	"LastName": this.getView().getModel("TestModel1").getProperty("/lastName"),
@@ -190,10 +254,10 @@ sap.ui.define([
 				// 	"Gender": this.getView().getModel("TestModel1").getProperty("/gender"),
 				// 	"Designation": this.getView().getModel("TestModel1").getProperty("/designation")
 				// }];
-				var path = "/ZEMPLOYEE_ANUSet('" + this.getView().getModel("TestModel1").getProperty("/empid") + "')";
+				var path = "/ZEMPLOYEE_ANUSet('" + odataUpdate.EmpId + "')";
 				this.getOwnerComponent().getModel().update(path, odataUpdate, {
 					success: function (oSuccessUpdate) {
-						this._getDialog1.close();
+						this._getDialog.close();
 						// this._onObjectMatched();
 						MessageBox.show(
 							"Selected Entry Updated Successfully", {
@@ -207,6 +271,7 @@ sap.ui.define([
 						// debugger;
 					}.bind(this)
 				});
+				this.getView().getModel("UIstate").setProperty("/visibleOthers", false);
 			},
 
 			_onObjectMatched: function (oEvent) {
@@ -248,7 +313,19 @@ sap.ui.define([
 				// 	}
 
 				// );
-			}
+			},
+
+			DesignationtextChange: function (oEvent) {
+
+					var Designation = this.getView().getModel("EmpDetailDialogModel").getProperty("/EmployeeDetailfrag/Designation");
+
+					if (Designation === "Others") {
+						this.getView().getModel("UIstate").setProperty("/visibleOthers", true);
+					} else {
+						this.getView().getModel("UIstate").setProperty("/visibleOthers", false);
+					}
+				}
+				// }
 		});
 
 	});

@@ -1,85 +1,135 @@
-<mvc:View controllerName="test.controller.Object" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc">
-	<Page title="Object Page">
-		<!--<subHeader>-->
+<mvc:View controllerName="test.controller.Object" xmlns:semantic="sap.f.semantic" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:microchart="sap.suite.ui.microchart" xmlns:table="sap.ui.table">
+	<Page class="sapUiContentPadding">
+		<!--<customHeader>-->
 		<!--	<Toolbar>-->
-		<!--		<ToolbarSpacer width="85%"/>-->
-		<!--		<Button text="Delete Multiple" icon="sap-icon://delete" type="Transparent" press="onPressDeleteMultiple"/>-->
-		<!--		<ToolbarSpacer/>-->
+		<!--<Button type="Back" press="onPress"/>-->
+		<!--<ToolbarSpacer/>-->
+		<!--		<Title text="Employee Information" level="H2"/>-->
 		<!--	</Toolbar>-->
-		<!--</subHeader>-->
+		<!--</customHeader>-->
 		<content>
 			<!--<Table id="idTable1" items="{ path: 'TestModel1>/EmployeeTable' }">-->
-			<Table id="idTable1" items="{ path: '/ZEMPLOYEE_ANUSet' }" mode="MultiSelect">
-				<headerToolbar>
+			<!--<VBox>-->
+			<!--<VBox height="10rem">-->
+			<table:Table id="idTable1" rows="{ path: '/ZEMPLOYEE_ANUSet' }" selectionMode="MultiToggle" visibleRowCount="7">
+				<!--mode="MultiSelect" fixedLayout="false">-->
+				<table:toolbar>
 					<OverflowToolbar>
 						<content>
 							<!--<Title text="Products" level="H2"/>-->
 							<ToolbarSpacer/>
-							<Button text="Delete Multiple" icon="sap-icon://delete" type="Transparent" press="onPressDeleteMultiple"/>
+							<Button text="" icon="sap-icon://refresh" type="Transparent" press="onPressRefresh"/>
 						</content>
 						<!--<Button text="Delete Multiple" icon="sap-icon://delete" type="Transparent" press="onPressDeleteMultiple"/>-->
 						<!--</content>-->
 					</OverflowToolbar>
-				</headerToolbar>
-				<columns>
-					<Column>
+				</table:toolbar>
+				<table:columns>
+					<table:Column>
 						<!--<Text text="First Name" design="BOLD" />-->
 						<Label text="Employee ID" design="Bold"/>
-					</Column>
-					<Column>
+						<table:template>
+							<Text text="{EmpId}"/>
+						</table:template>
+					</table:Column>
+					<table:Column>
 						<!--<Text text="First Name" design="BOLD" />-->
 						<Label text="First Name" design="Bold"/>
-					</Column>
-					<Column>
+						<table:template>
+							<Text text="{FirstName}"/>
+						</table:template>
+					</table:Column>
+					<table:Column>
 						<!--<Text text="Last Name"/>-->
 						<Label text="Last Name" design="Bold"/>
-					</Column>
-					<Column>
+						<table:template>
+							<Text text="{LastName}"/>
+						</table:template>
+					</table:Column>
+					<table:Column>
 						<!--<Text text="Email ID"/>-->
 						<Label text="Email ID" design="Bold"/>
-					</Column>
-					<Column>
+						<table:template>
+							<Text text="{EmailId}"/>
+						</table:template>
+					</table:Column>
+					<table:Column>
 						<!--<Text text="Designation"/> -->
 						<Label text="Designation" design="Bold"/>
-					</Column>
-					<Column>
+						<table:template>
+							<Text text="{Designation}"/>
+						</table:template>
+					</table:Column>
+					<table:Column>
 						<!--<Text text="Gender"/>-->
 						<Label text="Gender" design="Bold"/>
-					</Column>
-					<Column width="9rem">
-						<Label text="Actions" design="Bold"/>
-						<!--<rowActionTemplate></rowActionTemplate>-->
-					</Column>
-				</columns>
-				<items>
-					<ColumnListItem>
-						<cells>
-							<!--<Text text="{TestModel1>EmpId}"/>-->
-							<!--<Text text="{TestModel1>FirstName}"/>-->
-							<!--<Text text="{TestModel1>LastName}"/>-->
-							<!--<Text text="{TestModel1>EmailId}"/>-->
-							<!--<Text text="{TestModel1>Designation}"/>-->
-							<!--<Text text="{TestModel1>Gender}"/>-->
-							<Text text="{EmpId}"/>
-							<Text text="{FirstName}"/>
-							<Text text="{LastName}"/>
-							<Text text="{EmailId}"/>
-							<Text text="{Designation}"/>
+						<table:template>
 							<Text text="{Gender}"/>
+						</table:template>
+					</table:Column>
+					<table:Column width="9rem">
+						<Label text="Actions" design="Bold"/>
+						<table:template>
 							<HBox>
 								<Button press="handleEditPress" icon="sap-icon://edit"/>
 								<Button press="handleDeletePress" icon="sap-icon://delete"/>
 							</HBox>
-						</cells>
-					</ColumnListItem>
+						</table:template>
+						<!--<rowActionTemplate></rowActionTemplate>-->
+					</table:Column>
+				</table:columns>
+				<!--<items>-->
+				<!--	<ColumnListItem>-->
+				<!--		<cells>-->
+				<!--<Text text="{TestModel1>EmpId}"/>-->
+				<!--<Text text="{TestModel1>FirstName}"/>-->
+				<!--<Text text="{TestModel1>LastName}"/>-->
+				<!--<Text text="{TestModel1>EmailId}"/>-->
+				<!--<Text text="{TestModel1>Designation}"/>-->
+				<!--<Text text="{TestModel1>Gender}"/>-->
+				<!--			<Text text="{EmpId}"/>-->
+				<!--			<Text text="{FirstName}"/>-->
+				<!--			<Text text="{LastName}"/>-->
+				<!--			<Text text="{EmailId}"/>-->
+				<!--			<Text text="{Designation}"/>-->
+				<!--			<Text text="{Gender}"/>-->
+				<!--			<HBox>-->
+				<!--				<Button press="handleEditPress" icon="sap-icon://edit"/>-->
+				<!--				<Button press="handleDeletePress" icon="sap-icon://delete"/>-->
+				<!--			</HBox>-->
+				<!--		</cells>-->
+				<!--	</ColumnListItem>-->
+				<!--</items>-->
+			</table:Table>
+			<!--</VBox>-->
+			<!--<VBox height="50rem">-->
+			<FlexBox alignItems="Center" justifyContent="SpaceBetween">
+				<items>
+					<microchart:InteractiveDonutChart selectionChanged="onSelectionChanged">
+						<microchart:segments>
+							<microchart:InteractiveDonutChartSegment label="Implementation Phase" value="40.0" displayedValue="40.0%" color="Error"/>
+							<microchart:InteractiveDonutChartSegment label="Design Phase" value="21.5" displayedValue="21.5%" color="Critical"/>
+							<microchart:InteractiveDonutChartSegment label="Test Phase" value="38.5" displayedValue="38.5%" color="Good"/>
+						</microchart:segments>
+					</microchart:InteractiveDonutChart>
 				</items>
-			</Table>
+			</FlexBox>
+			<!--</HBox>-->
+			<!--</VBox>-->
 		</content>
 		<footer>
-			<OverflowToolbar id="otbFooter">
-				<Button icon="sap-icon://alert" text="{=${message>/}.length}" visible="{=${message>/}.length > 0}" type="Emphasized"
-					press="onMessagePopoverPress"/>
-			</OverflowToolbar>
+			<Bar>
+				<!--<OverflowToolbar id="otbFooter">-->
+				<contentLeft>
+					<Button icon="sap-icon://alert" text="{=${message>/}.length}" visible="{=${message>/}.length > 0}" type="Emphasized"
+						press="onMessagePopoverPress"/>
+				</contentLeft>
+				<contentRight>
+					<Button text="Delete Multiple" icon="sap-icon://delete" type="Transparent" press="onPressDeleteMultiple"/>
+				</contentRight>
+				<!--</OverflowToolbar>-->
+			</Bar>
 		</footer>
 	</Page>
 </mvc:View>

@@ -65,6 +65,7 @@ sap.ui.define([
 
 			var oEmployeeDetailModel = new JSONModel();
 			oEmployeeDetailModel.setProperty("/", {
+				"DesignationCollection": CmbxData,
 				"EmployeeDetailfrag": {
 					"EmpId": "",
 					"FirstName": "",
@@ -72,10 +73,19 @@ sap.ui.define([
 					"EmailId": "",
 					"Gender": "",
 					"Designation": "",
-					"User": ""
+					"User": "",
+					"Others": ""
 				}
 			});
 			this.getView().setModel(oEmployeeDetailModel, "EmpDetailDialogModel");
+
+			var oUIstate = new JSONModel();
+			oUIstate.setProperty("/", {
+				"visibleUser": true,
+				"visibleOthers": false,
+				"editable": false
+			});
+			this.getView().setModel(oUIstate, "UIstate");
 
 			if (!this._getDialog) {
 				this._getDialog = sap.ui.xmlfragment("test.fragment.dialog", this);
@@ -332,14 +342,14 @@ sap.ui.define([
 				success: function (oSuccessCreate) {
 					// this.closeDialog();
 					MessageBox.show(
-						"Entry Created Successfully with Employee ID " +oSuccessCreate.EmpId+ "", {
+						"Entry Created Successfully with Employee ID " + oSuccessCreate.EmpId + "", {
 							icon: MessageBox.Icon.SUCCESS,
 							title: "Success",
 							actions: ["OK"],
-							initialFocus: "OK",
-							onClose: function (oAction) {
-								this.getRouter().navTo("object");
-							}.bind(this)
+							initialFocus: "OK"
+								// onClose: function (oAction) {
+								// 	this.getRouter().navTo("object");
+								// }.bind(this)
 						});
 				}.bind(this),
 				// });
@@ -393,6 +403,7 @@ sap.ui.define([
 		},
 
 		onPressAllInfo: function () {
+			sap.ui.getCore().getMessageManager("message").removeAllMessages();
 			this.getRouter().navTo("object");
 		}
 	});
